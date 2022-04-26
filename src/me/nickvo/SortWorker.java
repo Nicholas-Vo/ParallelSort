@@ -1,14 +1,12 @@
 package me.nickvo;
 
+import java.util.Arrays;
+
 public class SortWorker implements Runnable {
-    private int[] array;
+    private final int[] array;
 
-    public void setArray(int[] array) {
+    public SortWorker(int[] array) {
         this.array = array;
-    }
-
-    public int[] getSortedArray() {
-        return array;
     }
 
     @Override
@@ -23,8 +21,10 @@ public class SortWorker implements Runnable {
                 array[j + 1] = array[j];
                 --j;
             }
-
             array[j + 1] = key;
         }
+
+        System.out.println("Sorted array: " + Arrays.toString(array));
+        
     }
 }

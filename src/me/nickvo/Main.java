@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         int[] original = getRandomArray(20);
 
         int[] copy1 = Arrays.copyOfRange(original, 0, original.length / 2);
@@ -15,29 +15,20 @@ public class Main {
         System.out.println("First half: " + Arrays.toString(copy1));
         System.out.println("Second half: " + Arrays.toString(copy2));
 
-        SortWorker sortWorker = new SortWorker();
-        Thread sortThread = new Thread(sortWorker);
+        SortWorker sortWorker = new SortWorker(copy1);
+        Thread sortThread1 = new Thread(sortWorker);
+        sortThread1.start();
+        sortThread1.join();
 
-        sortWorker.setArray(copy1);
-        sortThread.start();
-
-        int[] sortedArray1 = sortWorker.getSortedArray();
-
-        Thread sortThread2 = new Thread(sortWorker);
-        sortWorker.setArray(copy2);
+        SortWorker sortWorker2 = new SortWorker(copy2);
+        Thread sortThread2 = new Thread(sortWorker2);
         sortThread2.start();
+        sortThread2.join();
 
-        int[] sortedArray2 = sortWorker.getSortedArray();
-
-        System.out.println("Sorted array 1: " + Arrays.toString(sortedArray1));
-        System.out.println("Sorted array 2: " + Arrays.toString(sortedArray2));
-
-        MergeWorker mergeWorker = new MergeWorker(sortedArray1, sortedArray2);
+        MergeWorker mergeWorker = new MergeWorker();
         Thread mergeThread = new Thread(mergeWorker);
         mergeThread.start();
-
-        int[] combined = mergeWorker.getMergedArray();
-        System.out.println("Final array: " + Arrays.toString(combined));
+        mergeThread.join();
     }
 
     private static int[] getRandomArray(int length) {
