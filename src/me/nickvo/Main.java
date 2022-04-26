@@ -1,7 +1,6 @@
 package me.nickvo;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class Main {
@@ -16,23 +15,38 @@ public class Main {
         System.out.println("First half: " + Arrays.toString(copy1));
         System.out.println("Second half: " + Arrays.toString(copy2));
 
-        InsertionSorter sorter = new InsertionSorter(original);
+        SortWorker sortWorker = new SortWorker();
+        Thread sortThread = new Thread(sortWorker);
 
-        sorter.run();
-        int[] sortedArray = sorter.getArray();
+        sortWorker.setArray(copy1);
+        sortThread.start();
 
-        System.out.println(Arrays.toString(sortedArray));
+        int[] sortedArray1 = sortWorker.getSortedArray();
+
+        Thread sortThread2 = new Thread(sortWorker);
+        sortWorker.setArray(copy2);
+        sortThread2.start();
+
+        int[] sortedArray2 = sortWorker.getSortedArray();
+
+        System.out.println("Sorted array 1: " + Arrays.toString(sortedArray1));
+        System.out.println("Sorted array 2: " + Arrays.toString(sortedArray2));
+
+        MergeWorker mergeWorker = new MergeWorker(sortedArray1, sortedArray2);
+        Thread mergeThread = new Thread(mergeWorker);
+        mergeThread.start();
+
+        int[] combined = mergeWorker.getMergedArray();
+        System.out.println("Final array: " + Arrays.toString(combined));
     }
 
     private static int[] getRandomArray(int length) {
         int[] array = new int[length];
-
         Random random = new Random();
 
         for (int i = 0; i < length; i++) {
             array[i] = random.nextInt(250);
         }
-
         return array;
     }
 }
