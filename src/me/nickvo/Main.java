@@ -2,6 +2,8 @@ package me.nickvo;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Main {
 
@@ -15,17 +17,19 @@ public class Main {
         System.out.println("First half: " + Arrays.toString(copy1));
         System.out.println("Second half: " + Arrays.toString(copy2));
 
-        SortWorker sortWorker = new SortWorker(copy1);
+        BlockingQueue<int[]> q = new LinkedBlockingQueue<>();
+
+        SortWorker sortWorker = new SortWorker(copy1, q);
         Thread sortThread1 = new Thread(sortWorker);
         sortThread1.start();
         sortThread1.join();
 
-        SortWorker sortWorker2 = new SortWorker(copy2);
+        SortWorker sortWorker2 = new SortWorker(copy2, q);
         Thread sortThread2 = new Thread(sortWorker2);
         sortThread2.start();
         sortThread2.join();
 
-        MergeWorker mergeWorker = new MergeWorker();
+        MergeWorker mergeWorker = new MergeWorker(q);
         Thread mergeThread = new Thread(mergeWorker);
         mergeThread.start();
         mergeThread.join();
