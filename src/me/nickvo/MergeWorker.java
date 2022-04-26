@@ -12,19 +12,19 @@ public class MergeWorker implements Runnable {
 
     @Override
     public void run() {
-        int[] array1 = new int[20];
-        int[] array2 = new int[20];
+        int[] array1 = null;
+        int[] array2 = null;
 
         try {
             array1 = q.take();
             array2 = q.take();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            System.out.println("Error: One or more of the arrays is null.");
         }
 
         int[] combined = Arrays.copyOf(array1, array1.length + array2.length);
         System.arraycopy(array2, 0, combined, array1.length, array2.length);
 
-        System.out.println("Final array: " + Arrays.toString(combined));
+        Printer.print("Final array: ", combined);
     }
 }
