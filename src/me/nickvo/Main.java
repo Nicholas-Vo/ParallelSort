@@ -13,20 +13,20 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Main {
 
-    // The driver method
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Enter array size:");
         Scanner scanner = new Scanner(System.in);
-        int length = scanner.nextInt();
 
-        int[] original = getRandomArray(length);
+        int[] original = getRandomArray(scanner.nextInt());
+
+        long startTime = System.currentTimeMillis();
 
         int[] copy1 = Arrays.copyOfRange(original, 0, original.length / 2);
         int[] copy2 = Arrays.copyOfRange(original, original.length / 2, original.length);
 
-        System.out.println("Original: " + Arrays.toString(original));
-        System.out.println("First half: " + Arrays.toString(copy1));
-        System.out.println("Second half: " + Arrays.toString(copy2));
+        Printer.print("Original: ", original);
+        Printer.print("First half: ", copy1);
+        Printer.print("Second half: ", copy2);
         System.out.println();
         Printer.print("First half: ", copy1);
         Printer.print("Second half: ", copy2);
@@ -49,10 +49,13 @@ public class Main {
         Thread mergeThread = new Thread(mergeWorker);
         mergeThread.start();
         mergeThread.join();
+
+        System.out.println("Elapsed time: " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     /**
      * Helper method to obtain a random array of integers
+     *
      * @param length: The length
      * @return The array
      */
