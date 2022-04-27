@@ -6,8 +6,14 @@ import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * Nick Voss
+ * IT386 01
+ * Homework 5
+ */
 public class Main {
 
+    // The driver method
     public static void main(String[] args) throws InterruptedException {
         System.out.println("Enter array size:");
         Scanner scanner = new Scanner(System.in);
@@ -21,11 +27,12 @@ public class Main {
         System.out.println("Original: " + Arrays.toString(original));
         System.out.println("First half: " + Arrays.toString(copy1));
         System.out.println("Second half: " + Arrays.toString(copy2));
-
-        Printer.print("Original array: ", original);
+        System.out.println();
         Printer.print("First half: ", copy1);
         Printer.print("Second half: ", copy2);
+        System.out.println();
 
+        // BlockingQueue is used to pass between threads and maintain order
         BlockingQueue<int[]> q = new LinkedBlockingQueue<>();
 
         SortWorker sortWorker = new SortWorker(copy1, q);
@@ -44,6 +51,11 @@ public class Main {
         mergeThread.join();
     }
 
+    /**
+     * Helper method to obtain a random array of integers
+     * @param length: The length
+     * @return The array
+     */
     private static int[] getRandomArray(int length) {
         int[] array = new int[length];
         Random random = new Random();

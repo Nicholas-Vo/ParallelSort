@@ -1,8 +1,11 @@
 package me.nickvo;
 
-import java.util.Arrays;
 import java.util.concurrent.BlockingQueue;
-
+/**
+ * Nick Voss
+ * IT386 01
+ * Homework 5
+ */
 public class SortWorker implements Runnable {
     private final int[] array;
     private final BlockingQueue<int[]> q;
@@ -29,7 +32,7 @@ public class SortWorker implements Runnable {
 
         Printer.print("Sorted array: ", array);
         try {
-            q.put(array);
+            q.put(array); // Give array to merge thread
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
